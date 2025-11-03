@@ -7,3 +7,4 @@ Godot 4.5.1
 2. Pixel art for character
 3. Pixel art for common blocks (dirt, grass, stone)
 4. Have working player with collisions, movement and jumping(gravity)
+5. Choose main enemy (to give a clue about world setting)
