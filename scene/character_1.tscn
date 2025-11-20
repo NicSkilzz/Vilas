@@ -1,0 +1,93 @@
+[gd_scene load_steps=13 format=3 uid="uid://cp5he8bn2exlp"]
+
+[ext_resource type="Script" path="res://scripts/character_1.gd" id="1_aianq"]
+[ext_resource type="Texture2D" uid="uid://u2cmqfynke2v" path="res://pixel_art/1/Idle.png" id="2_klr6r"]
+[ext_resource type="Texture2D" uid="uid://dptwr1oucma5v" path="res://pixel_art/1/Walk.png" id="3_2uglf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0t6h8"]
+atlas = ExtResource("2_klr6r")
+region = Rect2(0, 0, 41, 42)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sbsjf"]
+atlas = ExtResource("3_2uglf")
+region = Rect2(1, 3, 41, 39)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l55i8"]
+atlas = ExtResource("3_2uglf")
+region = Rect2(42, 3, 41, 39)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_47oof"]
+atlas = ExtResource("3_2uglf")
+region = Rect2(83, 3, 41, 39)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2wmww"]
+atlas = ExtResource("3_2uglf")
+region = Rect2(124, 3, 41, 39)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tfkyx"]
+atlas = ExtResource("3_2uglf")
+region = Rect2(165, 3, 41, 39)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w2t02"]
+atlas = ExtResource("3_2uglf")
+region = Rect2(206, 3, 41, 39)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_p0pq8"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"Idle left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0t6h8")
+}],
+"loop": true,
+"name": &"Idle right",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"walk_left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sbsjf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l55i8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_47oof")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2wmww")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tfkyx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w2t02")
+}],
+"loop": true,
+"name": &"walk_right",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0t6h8"]
+size = Vector2(16, 24)
+
+[node name="Character1" type="CharacterBody2D"]
+position = Vector2(0, 11)
+script = ExtResource("1_aianq")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(7, -21)
+sprite_frames = SubResource("SpriteFrames_p0pq8")
+animation = &"walk_right"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite2D"]
+position = Vector2(-5, 9)
+shape = SubResource("RectangleShape2D_0t6h8")
