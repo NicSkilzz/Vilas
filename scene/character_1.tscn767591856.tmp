@@ -88,6 +88,6 @@ position = Vector2(7, -21)
 sprite_frames = SubResource("SpriteFrames_p0pq8")
 animation = &"walk_right"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(1, -13)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite2D"]
+position = Vector2(-5, 9)
 shape = SubResource("RectangleShape2D_0t6h8")
