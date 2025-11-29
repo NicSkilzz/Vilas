@@ -8,5 +8,8 @@
 [node name="Character1" parent="." instance=ExtResource("1_5kiuu")]
 position = Vector2(64, 283)
 
+[node name="Camera2D" type="Camera2D" parent="Character1"]
+zoom = Vector2(1.75, 1.75)
+
 [node name="Node2D" parent="." instance=ExtResource("2_dbls1")]
 position = Vector2(-1, 523)
