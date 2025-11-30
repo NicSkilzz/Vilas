@@ -41,7 +41,7 @@ func _physics_process(delta: float) -> void:
 	
 	# Attack
 	if Input.is_action_just_pressed("attack"):
-		#attacking = true
+		attacking = true
 		$blue_guy_sprite.play("attack")
 		
 	update_animation()
@@ -58,3 +58,8 @@ func update_animation():
 				$blue_guy_sprite.play("run")
 		if velocity.y < 0:
 			$blue_guy_sprite.play("jump")
+
+
+func _on_blue_guy_sprite_animation_finished() -> void:
+	if $blue_guy_sprite.animation == "attack":
+		attacking = false
