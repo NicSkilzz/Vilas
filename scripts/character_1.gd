@@ -7,6 +7,7 @@ const GRAVITY_MULTIPLIER = 2
 const ACCELERATION = 50
 
 var double_jump = true
+var attacking = false
 
 func _physics_process(delta: float) -> void:
 	# Gravity
@@ -24,28 +25,36 @@ func _physics_process(delta: float) -> void:
 	elif direction > 0:
 		$blue_guy_sprite.flip_h = false 	 	
 	if direction:
-		if is_on_floor():
-			$blue_guy_sprite.play("run")
 		velocity.x = direction * SPEED
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
-		if is_on_floor():
-			$blue_guy_sprite.play("idle")
 		
 	# Jump
 	if Input.is_action_just_pressed("jump"):
 		if is_on_floor():
 			velocity.y = JUMP_VELOCITY
-			$blue_guy_sprite.play("jump")
 		# Double jump
 		elif not is_on_floor() and double_jump:
 			velocity.y = JUMP_VELOCITY
 			double_jump = false
 			$blue_guy_sprite.frame = 0
-			$blue_guy_sprite.play("jump")
 	
 	# Attack
 	if Input.is_action_just_pressed("attack"):
+		#attacking = true
 		$blue_guy_sprite.play("attack")
-
+		
+	update_animation()
 	move_and_slide()
+
+func update_animation():
+	if not attacking:
+		if is_on_floor():
+			if velocity.x == 0:
+				$blue_guy_sprite.play("idle")
+			elif velocity.x < 0:
+				$blue_guy_sprite.play("run")
+			elif velocity.x > 0:
+				$blue_guy_sprite.play("run")
+		if velocity.y < 0:
+			$blue_guy_sprite.play("jump")
