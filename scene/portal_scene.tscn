@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://b4lglirmrlg7t"]
+
+[ext_resource type="Script" uid="uid://buut4jnnhjgi8" path="res://scene/portal_scene.gd" id="1_2hyd7"]
+[ext_resource type="Texture2D" uid="uid://c1j0staiaomyk" path="res://pixel_art/Objects/door1.png" id="1_8bkwq"]
+[ext_resource type="Texture2D" uid="uid://ds6x1yxdx2wr2" path="res://pixel_art/Objects/door2.png" id="2_2hyd7"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_axnx2"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_8bkwq")
+}],
+"loop": true,
+"name": &"closed",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_2hyd7")
+}],
+"loop": true,
+"name": &"open",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8bkwq"]
+size = Vector2(14, 34)
+
+[node name="Portal" type="Area2D"]
+script = ExtResource("1_2hyd7")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_axnx2")
+animation = &"closed"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 11)
+shape = SubResource("RectangleShape2D_8bkwq")
+
+[node name="DestinationPoint" type="Marker2D" parent="."]
+position = Vector2(-93, 0)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

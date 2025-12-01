@@ -357,7 +357,7 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0t6h8"]
 size = Vector2(16, 24)
 
-[node name="Character1" type="CharacterBody2D"]
+[node name="Character1" type="CharacterBody2D" groups=["Player"]]
 position = Vector2(0, 11)
 script = ExtResource("1_aianq")
 

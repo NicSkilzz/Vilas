@@ -1,10 +1,9 @@
 extends CharacterBody2D
 
 
-const SPEED = 400
+const SPEED = 300
 const JUMP_VELOCITY = -600.0
 const GRAVITY_MULTIPLIER = 2
-const ACCELERATION = 50
 
 var double_jump = true
 var attacking = false
