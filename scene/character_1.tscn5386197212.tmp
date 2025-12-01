@@ -379,8 +379,4 @@ frame_progress = 0.5984241
 position = Vector2(1, -13)
 shape = SubResource("RectangleShape2D_0t6h8")
 
-[node name="Timer" type="Timer" parent="."]
-one_shot = true
-
 [connection signal="animation_finished" from="blue_guy_sprite" to="." method="_on_blue_guy_sprite_animation_finished"]
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

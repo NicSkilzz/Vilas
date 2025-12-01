@@ -4,13 +4,16 @@ extends CharacterBody2D
 const SPEED = 300
 const JUMP_VELOCITY = -600.0
 const GRAVITY_MULTIPLIER = 2
+const DASH = 850
 
 var double_jump = true
 var attacking = false
+var dashing = false
+var is_ready_dash = true
 
 func _physics_process(delta: float) -> void:
 	# Gravity
-	if not is_on_floor():
+	if not is_on_floor() and not dashing:
 		velocity += get_gravity() * delta * GRAVITY_MULTIPLIER
 	# Resetting double jump flag
 	elif is_on_floor():
@@ -18,15 +21,16 @@ func _physics_process(delta: float) -> void:
 
 	# Get the input direction and handle the movement/deceleration.
 	# < 0 if moving left, > 0 if moving right
-	var direction := Input.get_axis("move left", "move right") 
-	if direction < 0:
-		$blue_guy_sprite.flip_h = true
-	elif direction > 0:
-		$blue_guy_sprite.flip_h = false 	 	
-	if direction:
-		velocity.x = direction * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+	if not dashing and not attacking:
+		var direction := Input.get_axis("move left", "move right") 
+		if direction < 0:
+			$blue_guy_sprite.flip_h = true
+		elif direction > 0:
+			$blue_guy_sprite.flip_h = false
+		if direction:
+			velocity.x = direction * SPEED
+		else:
+			velocity.x = move_toward(velocity.x, 0, SPEED)
 		
 	# Jump
 	if Input.is_action_just_pressed("jump"):
@@ -39,15 +43,27 @@ func _physics_process(delta: float) -> void:
 			$blue_guy_sprite.frame = 0
 	
 	# Attack
-	if Input.is_action_just_pressed("attack"):
+	if Input.is_action_just_pressed("attack") and not dashing:
 		attacking = true
+		velocity.x /= 4
 		$blue_guy_sprite.play("attack")
+		
+	if Input.is_action_just_pressed("dash") and is_ready_dash and not attacking:
+		dashing = true
+		is_ready_dash = false
+		velocity.y = 0
+		if $blue_guy_sprite.flip_h:
+			velocity.x = (-1) * DASH
+		else:
+			velocity.x = DASH
+		$blue_guy_sprite.play("dash")
+		
 		
 	update_animation()
 	move_and_slide()
 
 func update_animation():
-	if not attacking:
+	if not attacking and not dashing:
 		if is_on_floor():
 			if velocity.x == 0:
 				$blue_guy_sprite.play("idle")
@@ -62,3 +78,11 @@ func update_animation():
 func _on_blue_guy_sprite_animation_finished() -> void:
 	if $blue_guy_sprite.animation == "attack":
 		attacking = false
+	elif $blue_guy_sprite.animation == "dash":
+		velocity.x = 0
+		$Timer.start()
+		dashing = false
+
+
+func _on_timer_timeout() -> void:
+	is_ready_dash = true
