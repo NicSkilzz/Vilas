@@ -6,6 +6,9 @@ const JUMP_VELOCITY = -600.0
 const GRAVITY_MULTIPLIER = 2
 const DASH = 850
 
+var can_use_ability_dash = false
+
+
 var double_jump = true
 var attacking = false
 var dashing = false
@@ -47,16 +50,17 @@ func _physics_process(delta: float) -> void:
 		attacking = true
 		velocity.x /= 4
 		$blue_guy_sprite.play("attack")
-		
-	if Input.is_action_just_pressed("dash") and is_ready_dash and not attacking:
-		dashing = true
-		is_ready_dash = false
-		velocity.y = 0
-		if $blue_guy_sprite.flip_h:
-			velocity.x = (-1) * DASH
-		else:
-			velocity.x = DASH
-		$blue_guy_sprite.play("dash")
+	
+	if can_use_ability_dash:
+		if Input.is_action_just_pressed("dash") and is_ready_dash and not attacking:
+			dashing = true
+			is_ready_dash = false
+			velocity.y = 0
+			if $blue_guy_sprite.flip_h:
+				velocity.x = (-1) * DASH
+			else:
+				velocity.x = DASH
+			$blue_guy_sprite.play("dash")
 		
 		
 	update_animation()

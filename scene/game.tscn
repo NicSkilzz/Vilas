@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://qi2p64nxkmrb"]
+[gd_scene load_steps=5 format=3 uid="uid://qi2p64nxkmrb"]
 
 [ext_resource type="PackedScene" uid="uid://cp5he8bn2exlp" path="res://scene/character_1.tscn" id="1_5kiuu"]
 [ext_resource type="PackedScene" uid="uid://dl5f1ckdlkass" path="res://scene/Platform.tscn" id="2_dbls1"]
 [ext_resource type="PackedScene" uid="uid://b4lglirmrlg7t" path="res://scene/portal_scene.tscn" id="3_33cqm"]
+[ext_resource type="PackedScene" uid="uid://bfw754g4rdehu" path="res://scene/skill_scene.tscn" id="4_xwcet"]
 
 [node name="game" type="Node2D"]
 
@@ -21,5 +22,8 @@ position = Vector2(1064, 191)
 
 [node name="DestinationPoint" parent="Portal" index="2"]
 position = Vector2(-1264, -116)
+
+[node name="Skill" parent="." instance=ExtResource("4_xwcet")]
+position = Vector2(262, 405)
 
 [editable path="Portal"]
