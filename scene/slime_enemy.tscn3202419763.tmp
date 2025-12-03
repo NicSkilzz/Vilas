@@ -251,7 +251,7 @@ collision_mask = 0
 [node name="slime_sprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_vx1m5")
 animation = &"hurt"
-frame_progress = 0.793876
+frame_progress = 0.25755247
 
 [node name="Hurtbox" type="Area2D" parent="slime_sprite"]
 script = ExtResource("7_o5csr")
@@ -266,5 +266,3 @@ rotation = 0.021838168
 shape = SubResource("CapsuleShape2D_12aje")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-
-[node name="Timer" type="Timer" parent="."]
