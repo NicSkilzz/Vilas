@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=3 uid="uid://cp5he8bn2exlp"]
+[gd_scene load_steps=60 format=3 uid="uid://cp5he8bn2exlp"]
 
 [ext_resource type="Script" uid="uid://bi64h3pt77y6k" path="res://scripts/character_1.gd" id="1_aianq"]
 [ext_resource type="Texture2D" uid="uid://euj0bosphgxm" path="res://pixel_art/3/Attack1.png" id="2_78h7r"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://cf8en3lwbugab" path="res://pixel_art/3/Jump.png" id="7_ekqwr"]
 [ext_resource type="Texture2D" uid="uid://b565pfneeaj35" path="res://pixel_art/3/Run.png" id="8_7lbsv"]
 [ext_resource type="Texture2D" uid="uid://dxb0nfspp2fr2" path="res://pixel_art/3/Squat.png" id="9_wreek"]
+[ext_resource type="Script" uid="uid://difftqw5yjvkd" path="res://scripts/hitbox.gd" id="10_60eas"]
 [ext_resource type="Texture2D" uid="uid://e8yeuyj8iofi" path="res://pixel_art/3/Walk.png" id="10_pvh1q"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_60eas"]
@@ -362,8 +363,54 @@ animations = [{
 "speed": 8.0
 }]
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_78h7r"]
+radius = 6.6653833
+height = 39.30539
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0t6h8"]
 size = Vector2(16, 24)
+
+[sub_resource type="Animation" id="Animation_60eas"]
+resource_name = "Pierce"
+length = 0.52
+markers = [{
+"color": Color(1, 1, 1, 1),
+"name": &"end_pierce",
+"time": 0.5
+}]
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("blue_guy_sprite/Hitbox/CollisionShape2D:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+
+[sub_resource type="Animation" id="Animation_6v4ff"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("blue_guy_sprite/Hitbox/CollisionShape2D:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wuvcn"]
+_data = {
+&"Pierce": SubResource("Animation_60eas"),
+&"RESET": SubResource("Animation_6v4ff")
+}
 
 [node name="Character1" type="CharacterBody2D" groups=["Player"]]
 position = Vector2(0, 11)
@@ -372,8 +419,19 @@ script = ExtResource("1_aianq")
 [node name="blue_guy_sprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(6, -22)
 sprite_frames = SubResource("SpriteFrames_awksw")
-animation = &"dash"
+animation = &"attack"
+frame = 5
 frame_progress = 1.0
+
+[node name="Hitbox" type="Area2D" parent="blue_guy_sprite"]
+script = ExtResource("10_60eas")
+metadata/_custom_type_script = "uid://difftqw5yjvkd"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="blue_guy_sprite/Hitbox"]
+position = Vector2(5.999999, 11.999999)
+rotation = -1.5707964
+shape = SubResource("CapsuleShape2D_78h7r")
+disabled = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1, -13)
@@ -381,6 +439,11 @@ shape = SubResource("RectangleShape2D_0t6h8")
 
 [node name="Timer" type="Timer" parent="."]
 one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_wuvcn")
+}
 
 [connection signal="animation_finished" from="blue_guy_sprite" to="." method="_on_blue_guy_sprite_animation_finished"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

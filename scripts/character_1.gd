@@ -1,5 +1,6 @@
 extends CharacterBody2D
 
+@onready var animation_player := $AnimationPlayer
 
 const SPEED = 300
 const JUMP_VELOCITY = -600.0
@@ -50,6 +51,7 @@ func _physics_process(delta: float) -> void:
 		attacking = true
 		velocity.x /= 4
 		$blue_guy_sprite.play("attack")
+		animation_player.play("Pierce")
 	
 	if can_use_ability_dash:
 		if Input.is_action_just_pressed("dash") and is_ready_dash and not attacking:
