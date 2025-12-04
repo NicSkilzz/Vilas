@@ -8,6 +8,9 @@
 
 [node name="game" type="Node2D"]
 
+[node name="Skill2" parent="." instance=ExtResource("4_xwcet")]
+position = Vector2(439, 452)
+
 [node name="Character1" parent="." instance=ExtResource("1_5kiuu")]
 z_index = 1
 position = Vector2(64, 283)
@@ -25,9 +28,9 @@ position = Vector2(1064, 191)
 position = Vector2(-1264, -116)
 
 [node name="Skill" parent="." instance=ExtResource("4_xwcet")]
-position = Vector2(262, 405)
+position = Vector2(264, 404)
 
 [node name="Slime" parent="." instance=ExtResource("5_p1ry8")]
-position = Vector2(214, 499)
+position = Vector2(345, 511)
 
 [editable path="Portal"]
