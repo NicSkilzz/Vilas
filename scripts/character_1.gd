@@ -8,7 +8,7 @@ const GRAVITY_MULTIPLIER = 2
 const DASH = 850
 
 var can_use_ability_dash = false
-
+var can_use_ability_wall_jump = false
 
 var double_jump = true
 var attacking = false
@@ -41,7 +41,7 @@ func _physics_process(delta: float) -> void:
 		if is_on_floor():
 			velocity.y = JUMP_VELOCITY
 		# Double jump
-		elif is_on_wall_only() and (Input.is_action_pressed("move left") or Input.is_action_pressed("move right")):
+		elif can_use_ability_wall_jump and is_on_wall_only() and (Input.is_action_pressed("move left") or Input.is_action_pressed("move right")):
 			velocity.y = JUMP_VELOCITY
 			$blue_guy_sprite.frame = 0
 		elif not is_on_floor() and double_jump:

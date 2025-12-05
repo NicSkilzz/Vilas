@@ -2,14 +2,15 @@
 
 [ext_resource type="PackedScene" uid="uid://cp5he8bn2exlp" path="res://scene/character_1.tscn" id="1_5kiuu"]
 [ext_resource type="PackedScene" uid="uid://dl5f1ckdlkass" path="res://scene/Platform.tscn" id="2_dbls1"]
-[ext_resource type="PackedScene" path="res://scene/portal_scene.tscn" id="3_33cqm"]
-[ext_resource type="PackedScene" path="res://scene/skill_scene.tscn" id="4_xwcet"]
+[ext_resource type="PackedScene" uid="uid://b4lglirmrlg7t" path="res://scene/portal_scene.tscn" id="3_33cqm"]
+[ext_resource type="PackedScene" uid="uid://bfw754g4rdehu" path="res://scene/skill_scene.tscn" id="4_xwcet"]
 [ext_resource type="PackedScene" uid="uid://cjas65kfauru3" path="res://scene/slime_enemy.tscn" id="5_p1ry8"]
 
 [node name="game" type="Node2D"]
 
 [node name="Skill2" parent="." instance=ExtResource("4_xwcet")]
 position = Vector2(439, 452)
+skill_name = "wall_jump"
 
 [node name="Character1" parent="." instance=ExtResource("1_5kiuu")]
 z_index = 1
@@ -29,6 +30,7 @@ position = Vector2(-1264, -116)
 
 [node name="Skill" parent="." instance=ExtResource("4_xwcet")]
 position = Vector2(264, 404)
+skill_name = "dash"
 
 [node name="Slime" parent="." instance=ExtResource("5_p1ry8")]
 position = Vector2(345, 511)
