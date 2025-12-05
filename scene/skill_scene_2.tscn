@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://xxhokii8u6kg"]
+
+[ext_resource type="Script" uid="uid://byh6e02iarhuk" path="res://scripts/skill_scene.gd" id="1_anaux"]
+[ext_resource type="Texture2D" uid="uid://cfmjy3tuu7uc3" path="res://pixel_art/Objects/chest_closed.png" id="2_bgn5p"]
+[ext_resource type="Texture2D" uid="uid://dk66xumjf5wfj" path="res://pixel_art/Objects/chest_opened.png" id="3_r32bs"]
+[ext_resource type="PackedScene" uid="uid://dt6fdtup6qi7" path="res://interaction/interaction_area.tscn" id="4_5av7k"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_g16m6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_bgn5p")
+}],
+"loop": true,
+"name": &"closed",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_r32bs")
+}],
+"loop": true,
+"name": &"open",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g16m6"]
+size = Vector2(28, 18)
+
+[node name="Skill" type="Area2D"]
+script = ExtResource("1_anaux")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_g16m6")
+animation = &"closed"
+
+[node name="InteractionArea" parent="." instance=ExtResource("4_5av7k")]
+action_name = "open"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_g16m6")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

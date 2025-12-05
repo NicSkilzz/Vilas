@@ -23,6 +23,10 @@ InteractionManager="*res://interaction/interaction_manager.tscn"
 
 Player=""
 
+[gui]
+
+theme/custom_font="uid://idycvxwymxnw"
+
 [input]
 
 "move left"={
