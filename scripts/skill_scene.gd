@@ -10,9 +10,3 @@ func on_interact():
 	var player = get_tree().get_first_node_in_group("Player")
 	player.can_use_ability_dash = true
 	$AnimatedSprite2D.play("open")
-
-
-func _on_body_entered(body: Node2D) -> void:
-	if body.is_in_group("Player"):
-		body.can_use_ability_dash = true
-		$AnimatedSprite2D.play("open")
