@@ -9,11 +9,13 @@ const DASH = 850
 
 var can_use_ability_dash = false
 var can_use_ability_wall_jump = false
+var can_use_ability_slowmo = true
 
 var double_jump = true
 var attacking = false
 var dashing = false
 var is_ready_dash = true
+var is_ready_slowmo = true
 
 func _physics_process(delta: float) -> void:
 	# Gravity
@@ -66,6 +68,11 @@ func _physics_process(delta: float) -> void:
 			else:
 				velocity.x = DASH
 			$blue_guy_sprite.play("dash")
+			
+	if can_use_ability_slowmo and is_ready_slowmo:
+		if Input.is_action_just_pressed("slowmo"):
+			$"../SlowmoController".start_slowmo()
+			
 		
 		
 	update_animation()

@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://bnv1pyvtkfa2a"]
+
+[ext_resource type="Script" uid="uid://btnd2426dap2c" path="res://scripts/slowmo_controller.gd" id="1_621co"]
+
+[node name="SlowmoController" type="Node"]
+script = ExtResource("1_621co")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.5
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
