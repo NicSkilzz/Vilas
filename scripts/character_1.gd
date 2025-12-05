@@ -25,8 +25,8 @@ func _physics_process(delta: float) -> void:
 
 	# Get the input direction and handle the movement/deceleration.
 	# < 0 if moving left, > 0 if moving right
+	var direction := Input.get_axis("move left", "move right") 
 	if not dashing and not attacking:
-		var direction := Input.get_axis("move left", "move right") 
 		if direction < 0:
 			$blue_guy_sprite.flip_h = true
 		elif direction > 0:
@@ -41,6 +41,9 @@ func _physics_process(delta: float) -> void:
 		if is_on_floor():
 			velocity.y = JUMP_VELOCITY
 		# Double jump
+		elif is_on_wall_only() and (Input.is_action_pressed("move left") or Input.is_action_pressed("move right")):
+			velocity.y = JUMP_VELOCITY
+			$blue_guy_sprite.frame = 0
 		elif not is_on_floor() and double_jump:
 			velocity.y = JUMP_VELOCITY
 			double_jump = false
