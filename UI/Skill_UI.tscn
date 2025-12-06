@@ -1,11 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://cwespvkqfn0dj"]
+[gd_scene load_steps=4 format=3 uid="uid://cwespvkqfn0dj"]
 
+[ext_resource type="Script" uid="uid://dff3oc38faowa" path="res://UI/skill_ui.gd" id="1_swtff"]
 [ext_resource type="Texture2D" uid="uid://rb8n4pcq1qci" path="res://pixel_art/Environment/Cartoon_Medieval_Field_Work_Level_Set_Environment - Quest Board.png" id="1_wf201"]
 
 [sub_resource type="Theme" id="Theme_wf201"]
 Button/font_sizes/font_size = 16
 
 [node name="SkillUI" type="Control"]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -15,6 +17,7 @@ anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 theme = SubResource("Theme_wf201")
+script = ExtResource("1_swtff")
 
 [node name="Menu" type="NinePatchRect" parent="."]
 layout_mode = 1
@@ -33,6 +36,7 @@ texture = ExtResource("1_wf201")
 region_rect = Rect2(16.033737, 89.36323, 224.66144, 166.63678)
 
 [node name="Button" type="Button" parent="Menu"]
+z_index = 100
 layout_mode = 0
 offset_left = 105.0
 offset_top = 146.0
@@ -58,3 +62,7 @@ offset_right = 398.0
 offset_bottom = 202.0
 text = "[3]
 hello"
+
+[connection signal="pressed" from="Menu/Button" to="." method="_on_button_1_pressed"]
+[connection signal="pressed" from="Menu/Button2" to="." method="_on_button_2_pressed"]
+[connection signal="pressed" from="Menu/Button3" to="." method="_on_button_3_pressed"]

@@ -20,8 +20,6 @@ position = Vector2(64, 283)
 [node name="Camera2D" type="Camera2D" parent="Character1"]
 zoom = Vector2(1.75, 1.75)
 
-[node name="SkillUI" parent="Character1/Camera2D" instance=ExtResource("7_qpk70")]
-
 [node name="Node2D" parent="." instance=ExtResource("2_dbls1")]
 position = Vector2(-1, 523)
 
@@ -38,5 +36,11 @@ position = Vector2(264, 404)
 position = Vector2(345, 511)
 
 [node name="SlowmoController" parent="." instance=ExtResource("6_xlg7c")]
+
+[node name="SkillUI" parent="." instance=ExtResource("7_qpk70")]
+offset_left = 167.7909
+offset_top = 257.82953
+offset_right = 167.7909
+offset_bottom = 257.82953
 
 [editable path="Portal"]

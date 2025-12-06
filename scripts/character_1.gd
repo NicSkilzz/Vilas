@@ -9,7 +9,7 @@ const DASH = 850
 
 var can_use_ability_dash = false
 var can_use_ability_wall_jump = false
-var can_use_ability_slowmo = true
+var can_use_ability_slowmo = false
 
 var double_jump = true
 var attacking = false
