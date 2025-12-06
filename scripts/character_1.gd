@@ -2,8 +2,8 @@ extends CharacterBody2D
 
 @onready var animation_player := $AnimationPlayer
 
-const SPEED = 300
-const JUMP_VELOCITY = -600.0
+const SPEED = 200
+const JUMP_VELOCITY = -500.0
 const GRAVITY_MULTIPLIER = 2
 const DASH = 850
 
@@ -54,7 +54,7 @@ func _physics_process(delta: float) -> void:
 	# Attack
 	if Input.is_action_just_pressed("attack") and not dashing:
 		attacking = true
-		velocity.x /= 4
+		velocity.x = 0
 		$blue_guy_sprite.play("attack")
 		animation_player.play("Pierce")
 	

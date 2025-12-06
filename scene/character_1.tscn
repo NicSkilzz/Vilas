@@ -414,6 +414,7 @@ _data = {
 
 [node name="Character1" type="CharacterBody2D" groups=["Player"]]
 position = Vector2(0, 11)
+collision_layer = 3
 script = ExtResource("1_aianq")
 
 [node name="blue_guy_sprite" type="AnimatedSprite2D" parent="."]

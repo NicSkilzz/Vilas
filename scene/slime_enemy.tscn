@@ -1,11 +1,52 @@
-[gd_scene load_steps=39 format=3 uid="uid://cjas65kfauru3"]
+[gd_scene load_steps=50 format=3 uid="uid://cjas65kfauru3"]
 
 [ext_resource type="Script" uid="uid://7714sstqbyip" path="res://scripts/slime_enemy.gd" id="1_12aje"]
 [ext_resource type="Texture2D" uid="uid://v5gfr02y8pvv" path="res://pixel_art/Slime1/Without_shadow/Slime1_Death_without_shadow.png" id="2_n6kbx"]
+[ext_resource type="Texture2D" uid="uid://73p7b3redbho" path="res://pixel_art/Slime1/Without_shadow/Slime1_Attack_without_shadow.png" id="2_o5csr"]
 [ext_resource type="Texture2D" uid="uid://dfmq41qw00r83" path="res://pixel_art/Slime1/Without_shadow/Slime1_Hurt_without_shadow.png" id="3_o5csr"]
 [ext_resource type="Texture2D" uid="uid://1cp1llt5aj1p" path="res://pixel_art/Slime1/Without_shadow/Slime1_Idle_without_shadow.png" id="4_ppfj4"]
 [ext_resource type="Texture2D" uid="uid://blsa27kkgj0eo" path="res://pixel_art/Slime1/Without_shadow/Slime1_Walk_without_shadow.png" id="5_nsv3n"]
 [ext_resource type="Script" uid="uid://coxu0x61tl02b" path="res://scripts/hurtbox.gd" id="7_o5csr"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ppfj4"]
+atlas = ExtResource("2_o5csr")
+region = Rect2(0, 192, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nsv3n"]
+atlas = ExtResource("2_o5csr")
+region = Rect2(64, 192, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j0yhu"]
+atlas = ExtResource("2_o5csr")
+region = Rect2(128, 192, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8pq4o"]
+atlas = ExtResource("2_o5csr")
+region = Rect2(192, 192, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vn8eq"]
+atlas = ExtResource("2_o5csr")
+region = Rect2(256, 192, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qegw7"]
+atlas = ExtResource("2_o5csr")
+region = Rect2(320, 192, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2b7ku"]
+atlas = ExtResource("2_o5csr")
+region = Rect2(384, 192, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_g4rea"]
+atlas = ExtResource("2_o5csr")
+region = Rect2(448, 192, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ag2bo"]
+atlas = ExtResource("2_o5csr")
+region = Rect2(512, 192, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dlj1m"]
+atlas = ExtResource("2_o5csr")
+region = Rect2(576, 192, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_48pmb"]
 atlas = ExtResource("2_n6kbx")
@@ -125,6 +166,41 @@ region = Rect2(448, 192, 64, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_vx1m5"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ppfj4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nsv3n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j0yhu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8pq4o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vn8eq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qegw7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2b7ku")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_g4rea")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ag2bo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dlj1m")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_48pmb")
@@ -250,8 +326,10 @@ collision_mask = 0
 
 [node name="slime_sprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_vx1m5")
-animation = &"hurt"
-frame_progress = 0.793876
+animation = &"attack"
+frame = 9
+frame_progress = 1.0
+metadata/_edit_group_ = true
 
 [node name="Hurtbox" type="Area2D" parent="slime_sprite"]
 script = ExtResource("7_o5csr")
@@ -259,6 +337,10 @@ metadata/_custom_type_script = "uid://coxu0x61tl02b"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="slime_sprite/Hurtbox"]
 shape = SubResource("CapsuleShape2D_ppfj4")
+
+[node name="RayCast2D" type="RayCast2D" parent="slime_sprite"]
+target_position = Vector2(40, 0)
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(2, 1)
@@ -268,3 +350,9 @@ shape = SubResource("CapsuleShape2D_12aje")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
 [node name="Timer" type="Timer" parent="."]
+
+[node name="CanAttackTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[connection signal="timeout" from="CanAttackTimer" to="." method="_on_can_attack_timer_timeout"]
