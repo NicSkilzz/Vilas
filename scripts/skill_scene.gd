@@ -4,8 +4,6 @@ extends Area2D
 
 var opened = false
 
-#@export var skill_name:String = "skill"
-
 func _ready() -> void:
 	interaction_area.interact = Callable(self, "on_interact")
 
