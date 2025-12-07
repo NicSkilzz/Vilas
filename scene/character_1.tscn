@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=3 uid="uid://cp5he8bn2exlp"]
+[gd_scene load_steps=63 format=3 uid="uid://cp5he8bn2exlp"]
 
 [ext_resource type="Script" uid="uid://bi64h3pt77y6k" path="res://scripts/character_1.gd" id="1_aianq"]
 [ext_resource type="Texture2D" uid="uid://euj0bosphgxm" path="res://pixel_art/3/Attack1.png" id="2_78h7r"]
@@ -10,6 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://dxb0nfspp2fr2" path="res://pixel_art/3/Squat.png" id="9_wreek"]
 [ext_resource type="Script" uid="uid://difftqw5yjvkd" path="res://scripts/hitbox.gd" id="10_60eas"]
 [ext_resource type="Texture2D" uid="uid://e8yeuyj8iofi" path="res://pixel_art/3/Walk.png" id="10_pvh1q"]
+[ext_resource type="Texture2D" uid="uid://burdh2ram4gjv" path="res://pixel_art/hearts/heart_32x32.png" id="11_6v4ff"]
+[ext_resource type="Script" uid="uid://coxu0x61tl02b" path="res://scripts/hurtbox.gd" id="11_wuvcn"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_60eas"]
 atlas = ExtResource("2_78h7r")
@@ -412,6 +414,22 @@ _data = {
 &"RESET": SubResource("Animation_6v4ff")
 }
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_wuvcn"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"beating (no files found)",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("11_6v4ff")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
 [node name="Character1" type="CharacterBody2D" groups=["Player"]]
 position = Vector2(0, 11)
 collision_layer = 3
@@ -420,9 +438,7 @@ script = ExtResource("1_aianq")
 [node name="blue_guy_sprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(6, -22)
 sprite_frames = SubResource("SpriteFrames_awksw")
-animation = &"attack"
-frame = 5
-frame_progress = 1.0
+animation = &"idle"
 
 [node name="Hitbox" type="Area2D" parent="blue_guy_sprite"]
 script = ExtResource("10_60eas")
@@ -434,6 +450,14 @@ rotation = -1.5707964
 shape = SubResource("CapsuleShape2D_78h7r")
 disabled = true
 
+[node name="Hurtbox" type="Area2D" parent="blue_guy_sprite"]
+script = ExtResource("11_wuvcn")
+metadata/_custom_type_script = "uid://coxu0x61tl02b"
+
+[node name="Hitbox Collision" type="CollisionShape2D" parent="blue_guy_sprite/Hurtbox"]
+position = Vector2(-5, 9)
+shape = SubResource("RectangleShape2D_0t6h8")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(1, -13)
 shape = SubResource("RectangleShape2D_0t6h8")
@@ -441,10 +465,61 @@ shape = SubResource("RectangleShape2D_0t6h8")
 [node name="Timer" type="Timer" parent="."]
 one_shot = true
 
+[node name="HurtTimer" type="Timer" parent="."]
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_wuvcn")
 }
+
+[node name="Health Bar" type="CanvasLayer" parent="."]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Health Bar"]
+offset_left = 17.0
+offset_top = 17.0
+offset_right = 163.0
+offset_bottom = 57.0
+scale = Vector2(1.1431988, 1.1431988)
+
+[node name="HeartRec" type="TextureRect" parent="Health Bar/HBoxContainer"]
+custom_minimum_size = Vector2(26.585, 0)
+layout_mode = 2
+
+[node name="Heart" type="AnimatedSprite2D" parent="Health Bar/HBoxContainer/HeartRec"]
+sprite_frames = SubResource("SpriteFrames_wuvcn")
+animation = &"idle"
+
+[node name="HeartRec2" type="TextureRect" parent="Health Bar/HBoxContainer"]
+custom_minimum_size = Vector2(26.585, 0)
+layout_mode = 2
+
+[node name="Heart" type="AnimatedSprite2D" parent="Health Bar/HBoxContainer/HeartRec2"]
+sprite_frames = SubResource("SpriteFrames_wuvcn")
+animation = &"idle"
+
+[node name="HeartRec3" type="TextureRect" parent="Health Bar/HBoxContainer"]
+custom_minimum_size = Vector2(26.585, 0)
+layout_mode = 2
+
+[node name="Heart" type="AnimatedSprite2D" parent="Health Bar/HBoxContainer/HeartRec3"]
+sprite_frames = SubResource("SpriteFrames_wuvcn")
+animation = &"idle"
+
+[node name="HeartRec4" type="TextureRect" parent="Health Bar/HBoxContainer"]
+custom_minimum_size = Vector2(26.585, 0)
+layout_mode = 2
+
+[node name="Heart" type="AnimatedSprite2D" parent="Health Bar/HBoxContainer/HeartRec4"]
+sprite_frames = SubResource("SpriteFrames_wuvcn")
+animation = &"idle"
+
+[node name="HeartRec5" type="TextureRect" parent="Health Bar/HBoxContainer"]
+custom_minimum_size = Vector2(26.585, 0)
+layout_mode = 2
+
+[node name="Heart" type="AnimatedSprite2D" parent="Health Bar/HBoxContainer/HeartRec5"]
+sprite_frames = SubResource("SpriteFrames_wuvcn")
+animation = &"idle"
 
 [connection signal="animation_finished" from="blue_guy_sprite" to="." method="_on_blue_guy_sprite_animation_finished"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

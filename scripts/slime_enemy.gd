@@ -15,9 +15,10 @@ func _ready() -> void:
 	current_speed = SPEED
 	$slime_sprite.connect("animation_finished", _on_animation_finished)
 	$slime_sprite.play("walk")
+	$HurtTimer.wait_time = 1.0
+	$HurtTimer.connect("timeout", _on_hurt_timer_timeout)
 	update_animation()
 	
-
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if not is_on_floor():
@@ -63,7 +64,7 @@ func _on_animation_finished() -> void:
 
 # Damage handling
 func take_damage(amount: int, knockback_direction: Vector2 = Vector2.ZERO) -> void:
-	# Applying knockback (Not working just yet)
+	# Applying knockback
 	if knockback_direction != Vector2.ZERO:
 		velocity = knockback_direction * knockback_force
 	
@@ -82,10 +83,8 @@ func update_animation():
 	else:
 		$slime_sprite.flip_h = true
 
-
 func _on_can_attack_timer_timeout() -> void:
 	can_target_player = true
-
 
 func _on_hurt_timer_timeout() -> void:
 	is_hurt = false

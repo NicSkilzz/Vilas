@@ -2,20 +2,33 @@ extends CharacterBody2D
 
 @onready var animation_player := $AnimationPlayer
 
-const SPEED = 200
-const JUMP_VELOCITY = -500.0
-const GRAVITY_MULTIPLIER = 2
-const DASH = 850
+const SPEED : float = 200.0
+const JUMP_VELOCITY : float = -500.0
+const GRAVITY_MULTIPLIER : float = 2.0
+const DASH : float = 850.0
 
-var can_use_ability_dash = false
-var can_use_ability_wall_jump = false
-var can_use_ability_slowmo = false
+var hearts_list : Array [TextureRect]
+var health : int = 5
+var knockback_force: int = 100
 
-var double_jump = true
-var attacking = false
-var dashing = false
-var is_ready_dash = true
-var is_ready_slowmo = true
+var can_use_ability_dash : bool = false
+var can_use_ability_wall_jump : bool = false
+var can_use_ability_slowmo : bool = false
+
+var double_jump : bool = true
+var attacking : bool = false
+var dashing : bool = false
+var is_ready_dash : bool = true
+var is_ready_slowmo : bool = true
+var is_hurt : bool = false
+var can_attack : bool = true
+
+func _ready() -> void:
+	var hearts_parent = $"Health Bar/HBoxContainer"
+	for child in hearts_parent.get_children():
+		hearts_list.append(child)
+	print(hearts_list)
+	$HurtTimer.wait_time = 1.0
 
 func _physics_process(delta: float) -> void:
 	# Gravity
@@ -52,7 +65,7 @@ func _physics_process(delta: float) -> void:
 			$blue_guy_sprite.frame = 0
 	
 	# Attack
-	if Input.is_action_just_pressed("attack") and not dashing:
+	if Input.is_action_just_pressed("attack") and not dashing and can_attack:
 		attacking = true
 		velocity.x = 0
 		$blue_guy_sprite.play("attack")
@@ -90,6 +103,15 @@ func update_animation():
 		if velocity.y < 0:
 			$blue_guy_sprite.play("jump")
 
+func take_damage(amount: int, knockback_direction: Vector2 = Vector2.ZERO) -> void:
+	if knockback_direction != Vector2.ZERO:
+		velocity = knockback_direction * knockback_force
+	if health > 0:
+		health -= 1
+		$blue_guy_sprite.play("hurt")
+		await get_tree().create_timer(2.0).timeout
+		update_animation()
+		
 
 func _on_blue_guy_sprite_animation_finished() -> void:
 	if $blue_guy_sprite.animation == "attack":
