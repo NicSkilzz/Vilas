@@ -252,7 +252,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_0ce7g")
 }],
-"loop": true,
+"loop": false,
 "name": &"hurt",
 "speed": 5.0
 }, {
@@ -325,10 +325,9 @@ collision_layer = 2
 collision_mask = 0
 
 [node name="slime_sprite" type="AnimatedSprite2D" parent="."]
+scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_vx1m5")
-animation = &"attack"
-frame = 9
-frame_progress = 1.0
+animation = &"hurt"
 metadata/_edit_group_ = true
 
 [node name="Hurtbox" type="Area2D" parent="slime_sprite"]
@@ -349,10 +348,12 @@ shape = SubResource("CapsuleShape2D_12aje")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
-[node name="Timer" type="Timer" parent="."]
+[node name="HurtTimer" type="Timer" parent="."]
+wait_time = 0.5
 
 [node name="CanAttackTimer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
 
+[connection signal="timeout" from="HurtTimer" to="." method="_on_hurt_timer_timeout"]
 [connection signal="timeout" from="CanAttackTimer" to="." method="_on_can_attack_timer_timeout"]

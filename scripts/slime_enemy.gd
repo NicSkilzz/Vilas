@@ -2,14 +2,14 @@ extends CharacterBody2D
 
 @onready var animation_player := $AnimationPlayer
 
-const SPEED : float = 50.0
-const JUMP_VELOCITY : float = -400.0
-var current_speed: float
-var knockback_force = 500
-var can_target_player:bool = true
-var is_attacking:bool = false
+const SPEED: int = 50
+var current_speed: int
+var knockback_force: int = 100
 
-@export var direction_right = true
+var can_target_player: bool = true
+var is_attacking: bool = false
+var is_hurt: bool = false
+@export var direction_right: bool = true
 
 func _ready() -> void:
 	current_speed = SPEED
@@ -25,7 +25,7 @@ func _physics_process(delta: float) -> void:
 		can_target_player = false
 	
 	# Handle Movement
-	if not is_attacking:
+	if not is_attacking and not is_hurt:
 		if direction_right:
 			velocity.x = current_speed
 			$slime_sprite/RayCast2D.target_position = Vector2(80, 0)
@@ -33,6 +33,8 @@ func _physics_process(delta: float) -> void:
 			velocity.x = -current_speed
 			$slime_sprite/RayCast2D.target_position = Vector2(-80, 0)
 	
+	move_and_slide()
+
 	if can_target_player and $slime_sprite/RayCast2D.is_colliding():
 		velocity.x = 0
 		$slime_sprite.play("attack")
@@ -41,15 +43,13 @@ func _physics_process(delta: float) -> void:
 	
 	if not can_target_player and $CanAttackTimer.time_left == 0:
 		$CanAttackTimer.start()
-	
-	move_and_slide()
-	
+		
 	if is_on_wall():
 		if direction_right:
 			direction_right = false
 		else:
 			direction_right = true
-	
+			
 	update_animation()
 
 # Incase doing something when hurt
@@ -58,22 +58,22 @@ func _on_animation_finished() -> void:
 		$slime_sprite.play("walk")
 	if $slime_sprite.animation == "attack":
 		$slime_sprite.play("walk")
-		$CanAttackTimer.start()
 		is_attacking = false
+		$CanAttackTimer.start()
 
 # Damage handling
 func take_damage(amount: int, knockback_direction: Vector2 = Vector2.ZERO) -> void:
-	$slime_sprite.play("hurt")
 	# Applying knockback (Not working just yet)
 	if knockback_direction != Vector2.ZERO:
 		velocity = knockback_direction * knockback_force
-	# Reduce speed when taking damage
-	current_speed *= 0.5
-	await get_tree().create_timer(0.5).timeout
-	current_speed = SPEED
-		
-	$slime_sprite.sprite_frames.set_animation_loop("hurt", false)
 	
+	if $slime_sprite.animation == "hurt":
+		$slime_sprite.frame = 0
+	$slime_sprite.play("hurt")
+	is_attacking = false
+	is_hurt = true
+	
+	$HurtTimer.start()
 	print("Damage: ", amount)
 
 func update_animation():
@@ -85,3 +85,7 @@ func update_animation():
 
 func _on_can_attack_timer_timeout() -> void:
 	can_target_player = true
+
+
+func _on_hurt_timer_timeout() -> void:
+	is_hurt = false
