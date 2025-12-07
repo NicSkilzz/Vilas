@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=3 uid="uid://cjas65kfauru3"]
+[gd_scene load_steps=50 format=3 uid="uid://cjas65kfauru3"]
 
 [ext_resource type="Script" uid="uid://7714sstqbyip" path="res://scripts/slime_enemy.gd" id="1_12aje"]
 [ext_resource type="Texture2D" uid="uid://v5gfr02y8pvv" path="res://pixel_art/Slime1/Without_shadow/Slime1_Death_without_shadow.png" id="2_n6kbx"]
@@ -7,7 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://1cp1llt5aj1p" path="res://pixel_art/Slime1/Without_shadow/Slime1_Idle_without_shadow.png" id="4_ppfj4"]
 [ext_resource type="Texture2D" uid="uid://blsa27kkgj0eo" path="res://pixel_art/Slime1/Without_shadow/Slime1_Walk_without_shadow.png" id="5_nsv3n"]
 [ext_resource type="Script" uid="uid://coxu0x61tl02b" path="res://scripts/hurtbox.gd" id="7_o5csr"]
-[ext_resource type="Script" uid="uid://difftqw5yjvkd" path="res://scripts/hitbox.gd" id="8_ppfj4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ppfj4"]
 atlas = ExtResource("2_o5csr")
@@ -335,14 +334,7 @@ metadata/_edit_group_ = true
 script = ExtResource("7_o5csr")
 metadata/_custom_type_script = "uid://coxu0x61tl02b"
 
-[node name="Hurtbox_collision" type="CollisionShape2D" parent="slime_sprite/Hurtbox"]
-shape = SubResource("CapsuleShape2D_ppfj4")
-
-[node name="Hitbox" type="Area2D" parent="slime_sprite"]
-script = ExtResource("8_ppfj4")
-metadata/_custom_type_script = "uid://difftqw5yjvkd"
-
-[node name="Hitbox_collision" type="CollisionShape2D" parent="slime_sprite/Hitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="slime_sprite/Hurtbox"]
 shape = SubResource("CapsuleShape2D_ppfj4")
 
 [node name="Ray_Detect_Player" type="RayCast2D" parent="slime_sprite"]

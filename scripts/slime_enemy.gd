@@ -12,6 +12,10 @@ var is_hurt: bool = false
 @export var direction_right: bool = true
 
 func _ready() -> void:
+	$slime_sprite/Hurtbox.collision_layer = 0
+	$slime_sprite/Hurtbox.collision_mask = 8
+	$slime_sprite/Hitbox.collision_layer = 2
+	$slime_sprite/Hitbox.collision_mask = 0
 	current_speed = SPEED
 	$slime_sprite.connect("animation_finished", _on_animation_finished)
 	$slime_sprite.play("walk")
@@ -20,23 +24,22 @@ func _ready() -> void:
 	update_animation()
 	
 func _physics_process(delta: float) -> void:
-	# Add the gravity.
+	# Add the gravity
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 		can_target_player = false
-	
 	# Handle Movement
 	if not is_attacking and not is_hurt:
 		if direction_right:
 			velocity.x = current_speed
-			$slime_sprite/RayCast2D.target_position = Vector2(80, 0)
+			$slime_sprite/Ray_Detect_Player.target_position = Vector2(40, 0)
 		else:
 			velocity.x = -current_speed
-			$slime_sprite/RayCast2D.target_position = Vector2(-80, 0)
+			$slime_sprite/Ray_Detect_Player.target_position = Vector2(-40, 0)
 	
 	move_and_slide()
 
-	if can_target_player and $slime_sprite/RayCast2D.is_colliding():
+	if can_target_player and $slime_sprite/Ray_Detect_Player.is_colliding():
 		velocity.x = 0
 		$slime_sprite.play("attack")
 		can_target_player = false
@@ -63,7 +66,7 @@ func _on_animation_finished() -> void:
 		$CanAttackTimer.start()
 
 # Damage handling
-func take_damage(amount: int, knockback_direction: Vector2 = Vector2.ZERO) -> void:
+func take_damage(knockback_direction: Vector2 = Vector2.ZERO) -> void:
 	# Applying knockback
 	if knockback_direction != Vector2.ZERO:
 		velocity = knockback_direction * knockback_force
@@ -75,7 +78,12 @@ func take_damage(amount: int, knockback_direction: Vector2 = Vector2.ZERO) -> vo
 	is_hurt = true
 	
 	$HurtTimer.start()
-	print("Damage: ", amount)
+	
+# Deal damage
+func deal_damage():
+	var player = $slime_sprite/Ray_Detect_Player.get_collider()
+	if player.has_method("take_damage"):
+		player.take_damage()
 
 func update_animation():
 	if direction_right:

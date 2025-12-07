@@ -24,6 +24,10 @@ var is_hurt : bool = false
 var can_attack : bool = true
 
 func _ready() -> void:
+	$blue_guy_sprite/Hurtbox.collision_layer = 0
+	$blue_guy_sprite/Hurtbox.collision_mask = 2
+	$blue_guy_sprite/Hitbox.collision_layer = 8
+	$blue_guy_sprite/Hitbox.collision_mask = 0
 	var hearts_parent = $"Health Bar/HBoxContainer"
 	for child in hearts_parent.get_children():
 		hearts_list.append(child)
@@ -86,10 +90,18 @@ func _physics_process(delta: float) -> void:
 		if Input.is_action_just_pressed("slowmo"):
 			$"../SlowmoController".start_slowmo()
 			
-		
-		
 	update_animation()
 	move_and_slide()
+
+func take_damage(knockback_direction: Vector2 = Vector2.ZERO) -> void:
+	if knockback_direction != Vector2.ZERO:
+		velocity = knockback_direction * knockback_force
+	if health > 0:
+		health -= 1
+		$blue_guy_sprite.play("hurt")
+		update_heart_display()
+		update_animation()
+		
 
 func update_animation():
 	if not attacking and not dashing:
@@ -103,14 +115,10 @@ func update_animation():
 		if velocity.y < 0:
 			$blue_guy_sprite.play("jump")
 
-func take_damage(amount: int, knockback_direction: Vector2 = Vector2.ZERO) -> void:
-	if knockback_direction != Vector2.ZERO:
-		velocity = knockback_direction * knockback_force
-	if health > 0:
-		health -= 1
-		$blue_guy_sprite.play("hurt")
-		await get_tree().create_timer(2.0).timeout
-		update_animation()
+		
+func update_heart_display() -> void:
+	for i in range(hearts_list.size()):
+		hearts_list[i].visible = i < health
 		
 
 func _on_blue_guy_sprite_animation_finished() -> void:
