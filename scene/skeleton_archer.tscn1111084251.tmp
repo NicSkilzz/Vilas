@@ -1,8 +1,7 @@
-[gd_scene load_steps=31 format=3 uid="uid://bwlmm5tbcu6j2"]
+[gd_scene load_steps=21 format=3 uid="uid://bwlmm5tbcu6j2"]
 
 [ext_resource type="Script" uid="uid://clbupyp8g4r7n" path="res://scene/skeleton_archer.gd" id="1_uhnpp"]
 [ext_resource type="Texture2D" uid="uid://1teeklgei7a" path="res://pixel_art/Tiny_RPG_Character_Pack_v1.03b/Tiny_RPG_Character_Pack_v1.03b/Characters(100x100)/Skeleton Archer/Skeleton Archer/Skeleton Archer-Idle.png" id="1_ydroi"]
-[ext_resource type="Texture2D" uid="uid://bmyu5pss83pwr" path="res://pixel_art/Tiny_RPG_Character_Pack_v1.03b/Tiny_RPG_Character_Pack_v1.03b/Characters(100x100)/Skeleton Archer/Skeleton Archer/Skeleton Archer-Attack.png" id="3_mnpw1"]
 [ext_resource type="Texture2D" uid="uid://b2i510fbjhiiu" path="res://pixel_art/Tiny_RPG_Character_Pack_v1.03b/Tiny_RPG_Character_Pack_v1.03b/Characters(100x100)/Skeleton Archer/Skeleton Archer/Skeleton Archer-Walk.png" id="3_q5qpk"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uhnpp"]
@@ -28,42 +27,6 @@ region = Rect2(400, 0, 100, 100)
 [sub_resource type="AtlasTexture" id="AtlasTexture_cgenm"]
 atlas = ExtResource("1_ydroi")
 region = Rect2(500, 0, 100, 100)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_i0jhy"]
-atlas = ExtResource("3_mnpw1")
-region = Rect2(0, 0, 100, 100)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_rbi2d"]
-atlas = ExtResource("3_mnpw1")
-region = Rect2(100, 0, 100, 100)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_g5c0w"]
-atlas = ExtResource("3_mnpw1")
-region = Rect2(200, 0, 100, 100)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_acpgl"]
-atlas = ExtResource("3_mnpw1")
-region = Rect2(300, 0, 100, 100)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_v86fk"]
-atlas = ExtResource("3_mnpw1")
-region = Rect2(400, 0, 100, 100)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ycavg"]
-atlas = ExtResource("3_mnpw1")
-region = Rect2(500, 0, 100, 100)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_w2wvb"]
-atlas = ExtResource("3_mnpw1")
-region = Rect2(600, 0, 100, 100)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_8l570"]
-atlas = ExtResource("3_mnpw1")
-region = Rect2(700, 0, 100, 100)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_p0otf"]
-atlas = ExtResource("3_mnpw1")
-region = Rect2(800, 0, 100, 100)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_p4c6g"]
 atlas = ExtResource("3_q5qpk")
@@ -124,38 +87,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_i0jhy")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_rbi2d")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_g5c0w")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_acpgl")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_v86fk")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ycavg")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_w2wvb")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_8l570")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_p0otf")
-}],
-"loop": false,
-"name": &"shoot_arrow",
-"speed": 7.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_p4c6g")
 }, {
 "duration": 1.0,
@@ -189,7 +120,7 @@ radius = 6.666667
 height = 13.333334
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_q5qpk"]
-radius = 200.0
+radius = 150.0
 
 [node name="SkeletonArcher" type="CharacterBody2D"]
 scale = Vector2(1.5, 1.5)
@@ -197,9 +128,8 @@ script = ExtResource("1_uhnpp")
 
 [node name="skeleton_archer_sprite" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_p4c6g")
-animation = &"shoot_arrow"
-frame = 8
-frame_progress = 1.0
+animation = &"walk"
+frame_progress = 0.39292434
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(2, 0)
@@ -218,19 +148,5 @@ target_position = Vector2(0, 30)
 position = Vector2(2.6666667, 0)
 shape = SubResource("CircleShape2D_q5qpk")
 
-[node name="AttackRay1" type="RayCast2D" parent="."]
-target_position = Vector2(150, 0)
-collision_mask = 2
-
-[node name="AttackRay2" type="RayCast2D" parent="."]
-target_position = Vector2(-150, 0)
-collision_mask = 2
-
-[node name="AttackTimer" type="Timer" parent="."]
-wait_time = 2.0
-
-[connection signal="animation_finished" from="skeleton_archer_sprite" to="." method="_on_skeleton_archer_sprite_animation_finished"]
 [connection signal="timeout" from="StateTimer" to="." method="_on_state_timer_timeout"]
 [connection signal="body_entered" from="HostileArea" to="." method="_on_hostile_area_body_entered"]
-[connection signal="body_exited" from="HostileArea" to="." method="_on_hostile_area_body_exited"]
-[connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
