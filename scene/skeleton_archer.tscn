@@ -1,0 +1,142 @@
+[gd_scene load_steps=20 format=3 uid="uid://bwlmm5tbcu6j2"]
+
+[ext_resource type="Script" uid="uid://clbupyp8g4r7n" path="res://scene/skeleton_archer.gd" id="1_uhnpp"]
+[ext_resource type="Texture2D" uid="uid://1teeklgei7a" path="res://pixel_art/Tiny_RPG_Character_Pack_v1.03b/Tiny_RPG_Character_Pack_v1.03b/Characters(100x100)/Skeleton Archer/Skeleton Archer/Skeleton Archer-Idle.png" id="1_ydroi"]
+[ext_resource type="Texture2D" uid="uid://b2i510fbjhiiu" path="res://pixel_art/Tiny_RPG_Character_Pack_v1.03b/Tiny_RPG_Character_Pack_v1.03b/Characters(100x100)/Skeleton Archer/Skeleton Archer/Skeleton Archer-Walk.png" id="3_q5qpk"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uhnpp"]
+atlas = ExtResource("1_ydroi")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q5qpk"]
+atlas = ExtResource("1_ydroi")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mnpw1"]
+atlas = ExtResource("1_ydroi")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_norqh"]
+atlas = ExtResource("1_ydroi")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vca0d"]
+atlas = ExtResource("1_ydroi")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cgenm"]
+atlas = ExtResource("1_ydroi")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p4c6g"]
+atlas = ExtResource("3_q5qpk")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_66qlx"]
+atlas = ExtResource("3_q5qpk")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1clh0"]
+atlas = ExtResource("3_q5qpk")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d1jgn"]
+atlas = ExtResource("3_q5qpk")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bk6tm"]
+atlas = ExtResource("3_q5qpk")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t1kgs"]
+atlas = ExtResource("3_q5qpk")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fdack"]
+atlas = ExtResource("3_q5qpk")
+region = Rect2(600, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mnuec"]
+atlas = ExtResource("3_q5qpk")
+region = Rect2(700, 0, 100, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_p4c6g"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uhnpp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q5qpk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mnpw1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_norqh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vca0d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cgenm")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p4c6g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_66qlx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1clh0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d1jgn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bk6tm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t1kgs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fdack")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mnuec")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 6.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ydroi"]
+radius = 6.666667
+height = 13.333334
+
+[node name="SkeletonArcher" type="CharacterBody2D"]
+scale = Vector2(1.5, 1.5)
+script = ExtResource("1_uhnpp")
+
+[node name="skeleton_archer_sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_p4c6g")
+animation = &"walk"
+frame_progress = 0.39292434
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2, 0)
+shape = SubResource("CapsuleShape2D_ydroi")
+
+[node name="StateTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="JumpRay" type="RayCast2D" parent="."]
+rotation = -1.5707964
+target_position = Vector2(0, 30)
+
+[connection signal="timeout" from="StateTimer" to="." method="_on_state_timer_timeout"]
