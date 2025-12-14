@@ -1,7 +1,8 @@
-[gd_scene load_steps=51 format=3 uid="uid://cjas65kfauru3"]
+[gd_scene load_steps=52 format=3 uid="uid://cjas65kfauru3"]
 
 [ext_resource type="Script" uid="uid://7714sstqbyip" path="res://scripts/slime_enemy.gd" id="1_12aje"]
 [ext_resource type="Texture2D" uid="uid://v5gfr02y8pvv" path="res://pixel_art/Slime1/Without_shadow/Slime1_Death_without_shadow.png" id="2_n6kbx"]
+[ext_resource type="Script" uid="uid://6pr6b1ndb7g" path="res://Components/health.gd" id="2_nsv3n"]
 [ext_resource type="Texture2D" uid="uid://73p7b3redbho" path="res://pixel_art/Slime1/Without_shadow/Slime1_Attack_without_shadow.png" id="2_o5csr"]
 [ext_resource type="Texture2D" uid="uid://dfmq41qw00r83" path="res://pixel_art/Slime1/Without_shadow/Slime1_Hurt_without_shadow.png" id="3_o5csr"]
 [ext_resource type="Texture2D" uid="uid://1cp1llt5aj1p" path="res://pixel_art/Slime1/Without_shadow/Slime1_Idle_without_shadow.png" id="4_ppfj4"]
@@ -321,6 +322,10 @@ height = 12.0
 [node name="Slime" type="CharacterBody2D"]
 script = ExtResource("1_12aje")
 
+[node name="Health" type="Node" parent="."]
+script = ExtResource("2_nsv3n")
+metadata/_custom_type_script = "uid://6pr6b1ndb7g"
+
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 2
 collision_mask = 0
@@ -328,7 +333,7 @@ collision_mask = 0
 [node name="slime_sprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_vx1m5")
-animation = &"hurt"
+animation = &"attack"
 metadata/_edit_group_ = true
 
 [node name="Hurtbox" type="Area2D" parent="slime_sprite"]
@@ -339,10 +344,12 @@ metadata/_custom_type_script = "uid://coxu0x61tl02b"
 shape = SubResource("CapsuleShape2D_ppfj4")
 
 [node name="Hitbox" type="Area2D" parent="slime_sprite"]
+scale = Vector2(1.8411684, 1.7399409)
 script = ExtResource("8_ppfj4")
 metadata/_custom_type_script = "uid://difftqw5yjvkd"
 
 [node name="Hitbox_collision" type="CollisionShape2D" parent="slime_sprite/Hitbox"]
+scale = Vector2(0.8665548, 0.9150902)
 shape = SubResource("CapsuleShape2D_ppfj4")
 
 [node name="Ray_Detect_Player" type="RayCast2D" parent="slime_sprite"]

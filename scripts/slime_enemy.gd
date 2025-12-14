@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 @onready var animation_player := $AnimationPlayer
+@onready var health_component = $Health
 
 const SPEED: int = 50
 var current_speed: int
@@ -22,6 +23,10 @@ func _ready() -> void:
 	$HurtTimer.wait_time = 1.0
 	$HurtTimer.connect("timeout", _on_hurt_timer_timeout)
 	update_animation()
+	
+	health_component.health_depleted.connect(_on_health_depleted)
+	health_component.health_changed.connect(_on_health_changed)
+	$slime_sprite/Hitbox.set_active_frame(6, 9)
 	
 func _physics_process(delta: float) -> void:
 	# Add the gravity
@@ -84,6 +89,25 @@ func deal_damage():
 	var player = $slime_sprite/Ray_Detect_Player.get_collider()
 	if player.has_method("take_damage"):
 		player.take_damage()
+
+func _on_health_changed(diff: int):
+	if diff < 0:  
+		$slime_sprite.play("hurt")
+
+func _on_health_depleted():
+	die()
+
+func die():
+	$slime_sprite/Hurtbox.set_deferred("monitoring", false)
+	$slime_sprite/Hurtbox.set_deferred("monitorable", false)
+	
+	$slime_sprite/Hitbox.set_deferred("monitoring", false)
+	
+	$slime_sprite.play("death")
+	$CollisionShape2D.disabled = true
+	
+	await $slime_sprite.animation_finished
+	queue_free()
 
 func update_animation():
 	if direction_right:

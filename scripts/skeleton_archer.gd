@@ -34,15 +34,15 @@ func _physics_process(delta: float) -> void:
 	match current_state:
 		enemy_states.IDLE:
 			idle()
-			print("idle")
+			#print("idle")
 		enemy_states.MOVE_RIGHT:
 			move_right()
-			print("move_right")
+			#print("move_right")
 		enemy_states.MOVE_LEFT:
 			move_left()
-			print("move_left")
+			#print("move_left")
 		enemy_states.FIGHT:
-			print("fighting")
+			#print("fighting")
 			fight_player()
 
 	move_and_slide()
