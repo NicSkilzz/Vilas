@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://cltlr4ym2y504"]
+
+[ext_resource type="Texture2D" uid="uid://8nlmw3cu2lao" path="res://pixel_art/Tiny_RPG_Character_Pack_v1.03b/Tiny_RPG_Character_Pack_v1.03b/Arrow(Projectile)/Arrow03(32x32).png" id="1_gnlsn"]
+[ext_resource type="Script" uid="uid://c8bvkeak5fngb" path="res://scripts/arrow.gd" id="1_v4cta"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v4cta"]
+size = Vector2(13, 1)
+
+[node name="Arrow" type="CharacterBody2D"]
+collision_layer = 0
+script = ExtResource("1_v4cta")
+
+[node name="arrow_sprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_gnlsn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_v4cta")

@@ -10,6 +10,8 @@ const RANDOM_STATE_DURATION:int = 3
 const MIN_DIST_PLAYER:int = 150
 const MAX_DIST_PLAYER:int = 175
 
+var arrow_path = preload("res://scene/Arrow.tscn")
+var arrows = []     # free on death
 var can_attack:bool = true
 var player
 var direction = 1
@@ -77,6 +79,17 @@ func shoot_arrow():
 	current_state = enemy_states.SHOOTING
 	velocity.x = 0
 	$skeleton_archer_sprite.play("shoot_arrow")
+
+func spawn_arrow():
+	var arrow = arrow_path.instantiate()
+	if $skeleton_archer_sprite.flip_h:
+		arrow.direction = -1
+		arrow.flip()
+	else:
+		arrow.direction = 1
+	arrow.position = self.global_position
+	self.get_parent().add_child(arrow)
+	self.arrows.append(arrow)
 
 func distance_to_player():
 	return abs(self.global_position.x - player.global_position.x)
@@ -150,4 +163,9 @@ func _on_attack_timer_timeout() -> void:
 func _on_skeleton_archer_sprite_animation_finished() -> void:
 	if $skeleton_archer_sprite.animation == "shoot_arrow":
 		current_state = enemy_states.FIGHT
-		
+
+
+func _on_skeleton_archer_sprite_frame_changed() -> void:
+	if $skeleton_archer_sprite.animation == "shoot_arrow":
+		if $skeleton_archer_sprite.frame == 6:
+			spawn_arrow()
