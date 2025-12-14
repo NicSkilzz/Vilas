@@ -21,26 +21,26 @@ func _ready() -> void:
 	player = get_tree().get_first_node_in_group("Player")
 
 func _physics_process(delta: float) -> void:
-	if distance_to_player() < 100:
-		$JumpRay.enabled = false
-	else:
-		$JumpRay.enabled = true
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	else:
-		if $JumpRay.is_colliding():
+		if $JumpRay.is_colliding() and not $NotJumpRay.is_colliding():
 			velocity.y = JUMP_VELOCITY
 			velocity.x = direction * 2 * SPEED
 	
 	match current_state:
 		enemy_states.IDLE:
 			idle()
+			print("idle")
 		enemy_states.MOVE_RIGHT:
 			move_right()
+			print("move_right")
 		enemy_states.MOVE_LEFT:
 			move_left()
+			print("move_left")
 		enemy_states.FIGHT:
+			print("fighting")
 			fight_player()
 
 	move_and_slide()
@@ -48,14 +48,14 @@ func _physics_process(delta: float) -> void:
 func fight_player():
 	$JumpRay.enabled = true
 	if distance_to_player() < MIN_DIST_PLAYER:
-		if direction_to_player():
+		if direction_to_player() == 1:
 			move_right()
-		else:
+		elif direction_to_player() == -1:
 			move_left()
 	elif distance_to_player() > MAX_DIST_PLAYER:
-		if direction_to_player():
+		if direction_to_player() == 1:
 			move_left()
-		else:
+		elif direction_to_player() == -1:
 			move_right()
 	else:
 		idle()
@@ -99,24 +99,26 @@ func move_right():
 	$skeleton_archer_sprite.play("walk")
 	$skeleton_archer_sprite.flip_h = false
 	if current_state == enemy_states.FIGHT:
-		velocity.x = 1.5 * SPEED
+		velocity.x = 2 * SPEED
 	else:
 		velocity.x = SPEED
 	direction = 1
 	$JumpRay.enabled = true
 	$JumpRay.rotation = -90
+	$NotJumpRay.target_position.x = abs($NotJumpRay.target_position.x)
 
 
 func move_left():
 	$skeleton_archer_sprite.play("walk")
 	$skeleton_archer_sprite.flip_h = true
 	if current_state == enemy_states.FIGHT:
-		velocity.x = -1.5 * SPEED
+		velocity.x = -2 * SPEED
 	else:
 		velocity.x = -SPEED
 	direction = -1
 	$JumpRay.enabled = true
 	$JumpRay.rotation = 90
+	$NotJumpRay.target_position.x = - abs($NotJumpRay.target_position.x)
 
 
 func idle():

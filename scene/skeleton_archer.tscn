@@ -229,6 +229,10 @@ collision_mask = 2
 [node name="AttackTimer" type="Timer" parent="."]
 wait_time = 2.0
 
+[node name="NotJumpRay" type="RayCast2D" parent="."]
+position = Vector2(0, -24.666668)
+target_position = Vector2(30, -10)
+
 [connection signal="animation_finished" from="skeleton_archer_sprite" to="." method="_on_skeleton_archer_sprite_animation_finished"]
 [connection signal="timeout" from="StateTimer" to="." method="_on_state_timer_timeout"]
 [connection signal="body_entered" from="HostileArea" to="." method="_on_hostile_area_body_entered"]
