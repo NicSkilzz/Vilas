@@ -38,6 +38,7 @@ func set_temp_immortality(time: float):
 		immortality_timer = Timer.new()
 		immortality_timer.one_shot = true
 		add_child(immortality_timer)
+		print("immortal for ", time)
 		
 	if immortality_timer.timeout.is_connected(set_immortality):
 		immortality_timer.timeout.disconnect(set_immortality)
@@ -62,6 +63,7 @@ func set_health(val: int):
 		
 		if health == 0:
 			health_depleted.emit()
-
+			print("depleted")
+	#print(health)
 func get_health() -> int:
 	return health

@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://cjas65kfauru3" path="res://scene/slime_enemy.tscn" id="5_p1ry8"]
 [ext_resource type="PackedScene" path="res://scene/slowmo_controller.tscn" id="6_xlg7c"]
 [ext_resource type="PackedScene" uid="uid://cwespvkqfn0dj" path="res://UI/Skill_UI.tscn" id="7_qpk70"]
-[ext_resource type="PackedScene" path="res://scene/skeleton_archer.tscn" id="8_ll5lq"]
+[ext_resource type="PackedScene" uid="uid://bwlmm5tbcu6j2" path="res://scene/skeleton_archer.tscn" id="8_ll5lq"]
 
 [node name="game" type="Node2D"]
 
@@ -42,6 +42,6 @@ position = Vector2(345, 510)
 [node name="SlowmoController" parent="." instance=ExtResource("6_xlg7c")]
 
 [node name="SkeletonArcher" parent="." instance=ExtResource("8_ll5lq")]
-position = Vector2(547, 384)
+position = Vector2(865, 516)
 
 [editable path="Portal"]

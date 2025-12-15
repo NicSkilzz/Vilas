@@ -27,7 +27,7 @@ func _on_frame_change() -> void:
 	if not animated_sprite:
 		return
 	
-	if animated_sprite.animation == active_animation and animated_sprite.frame in active_frames:
+	if animated_sprite.animation == active_animation and animated_sprite.frame <= active_frames.back() and animated_sprite.frame >= active_frames[0]:
 		collision_shape.disabled = false
 	else:
 		collision_shape.disabled = true

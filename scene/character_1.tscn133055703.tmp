@@ -244,9 +244,9 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_v7taj")
 }],
-"loop": false,
+"loop": true,
 "name": &"death",
-"speed": 6.0
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -397,7 +397,7 @@ script = ExtResource("1_aianq")
 [node name="blue_guy_sprite" type="AnimatedSprite2D" parent="."]
 position = Vector2(6, -22)
 sprite_frames = SubResource("SpriteFrames_awksw")
-animation = &"death"
+animation = &"attack"
 
 [node name="Hitbox" type="Area2D" parent="blue_guy_sprite"]
 script = ExtResource("10_60eas")

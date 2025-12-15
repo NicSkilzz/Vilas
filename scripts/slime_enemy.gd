@@ -1,6 +1,5 @@
 extends CharacterBody2D
 
-@onready var animation_player := $AnimationPlayer
 @onready var health_component = $Health
 
 const SPEED: int = 50
@@ -66,6 +65,7 @@ func _on_animation_finished() -> void:
 	if $slime_sprite.animation == "hurt":
 		$slime_sprite.play("walk")
 	if $slime_sprite.animation == "attack":
+		#print("attack")
 		$slime_sprite.play("walk")
 		is_attacking = false
 		$CanAttackTimer.start()

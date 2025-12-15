@@ -234,7 +234,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_vqdns")
 }],
-"loop": true,
+"loop": false,
 "name": &"death",
 "speed": 5.0
 }, {
@@ -333,7 +333,7 @@ collision_mask = 0
 [node name="slime_sprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_vx1m5")
-animation = &"attack"
+animation = &"death"
 metadata/_edit_group_ = true
 
 [node name="Hurtbox" type="Area2D" parent="slime_sprite"]
@@ -362,13 +362,11 @@ position = Vector2(2, 1)
 rotation = 0.021838168
 shape = SubResource("CapsuleShape2D_12aje")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-
 [node name="HurtTimer" type="Timer" parent="."]
 wait_time = 0.5
 
 [node name="CanAttackTimer" type="Timer" parent="."]
-wait_time = 2.0
+wait_time = 0.5
 one_shot = true
 
 [connection signal="timeout" from="HurtTimer" to="." method="_on_hurt_timer_timeout"]
