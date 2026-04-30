@@ -6,7 +6,8 @@ signal health_changed(diff: int)
 signal health_depleted
 
 @export var max_health: int = 5 : set = set_max_health, get = get_max_health
-@export var immortality: bool = false : set = set_immortality, get = get_immortality
+@export var immortality: bool = false
+var _immortal: bool = false
 var immortality_timer: Timer = null
 @onready var health: int = max_health : set = set_health, get = get_health
 
@@ -28,10 +29,10 @@ func get_max_health() -> int:
 # Immortality:
 
 func set_immortality(val: bool):
-	pass
+	_immortal = val
 	
 func get_immortality() -> bool:
-	return immortality
+	return _immortal
 	
 func set_temp_immortality(time: float):
 	if immortality_timer == null:
@@ -42,23 +43,25 @@ func set_temp_immortality(time: float):
 		
 	if immortality_timer.timeout.is_connected(set_immortality):
 		immortality_timer.timeout.disconnect(set_immortality)
+	immortality_timer.timeout.connect(set_immortality.bind(false))
 		
 	immortality_timer.set_wait_time(time)
 	immortality_timer.timeout.connect(set_immortality.bind(false))
-	immortality = true
+	_immortal = true
 	immortality_timer.start()
 
 # Health:
 
 func set_health(val: int):
-	if val < health and immortality:
+	if val < health and _immortal:
+		#print("blocked by immortality")
 		return
-		
+	#print("health changing to: ", val)
 	var clamped_val = clampi(val, 0, max_health)
 	
 	if clamped_val != health:
 		var difference = clamped_val - health
-		health = val
+		health = clamped_val
 		health_changed.emit(difference)
 		
 		if health == 0:

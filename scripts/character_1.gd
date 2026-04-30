@@ -11,7 +11,7 @@ const DASH : float = 850.0
 var immortality_duration : float = 1.0
 
 var hearts_list : Array [TextureRect]
-var knockback_force: int = 100
+var knockback_force: int = 200
 
 var can_use_ability_dash : bool = false
 var can_use_ability_wall_jump : bool = false
@@ -39,10 +39,12 @@ func _ready() -> void:
 		hearts_list.append(child)
 	#print(hearts_list)
 	health_component.health_depleted.connect(_on_health_depleted)
-	health_component.health_changed.connect(_on_health_changed)
 	
 	$blue_guy_sprite.animation_finished.connect(_on_blue_guy_sprite_animation_finished)
-	$HurtTimer.wait_time = 1.0
+	$HurtTimer.timeout.connect(_on_hurt_timer_timeout)
+	$HurtTimer.wait_time = 0.3
+	
+	#print($blue_guy_sprite/Hurtbox.get_signal_connection_list("area_entered"))
 
 func _physics_process(delta: float) -> void:
 	if is_dead:
@@ -57,7 +59,7 @@ func _physics_process(delta: float) -> void:
 	# Get the input direction and handle the movement/deceleration.
 	# < 0 if moving left, > 0 if moving right
 	var direction := Input.get_axis("move left", "move right") 
-	if not dashing and not attacking:
+	if not dashing and not attacking and not is_hurt:
 		if direction < 0:
 			$blue_guy_sprite.flip_h = true
 		elif direction > 0:
@@ -66,6 +68,8 @@ func _physics_process(delta: float) -> void:
 			velocity.x = direction * SPEED
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
+	elif is_hurt:
+		velocity.x = move_toward(velocity.x, 0, SPEED * delta)
 		
 	# Jump
 	if Input.is_action_just_pressed("jump"):
@@ -106,17 +110,25 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func take_damage(knockback_direction: Vector2 = Vector2.ZERO) -> void:
+	print("take_damage called, is_hurt: ", is_hurt, " direction: ", knockback_direction)
+	print(get_stack())  # ← this shows exactly what called take_damage
+	if is_hurt:
+		return
+	is_hurt = true
+	$blue_guy_sprite/Hurtbox.set_deferred("monitoring", false)
 	if knockback_direction != Vector2.ZERO:
 		velocity = knockback_direction * knockback_force
+	health_component.set_health(health_component.get_health() - 1)
+	update_heart_display()
 	if health_component.get_health() > 0:
+		is_hurt = true
 		$blue_guy_sprite.play("hurt")
+		$HurtTimer.start()
 		health_component.set_temp_immortality(immortality_duration)
-		update_heart_display()
-		update_animation()
 		
 
 func update_animation():
-	if not attacking and not dashing:
+	if not attacking and not dashing and not is_hurt:
 		if is_on_floor():
 			if velocity.x == 0:
 				$blue_guy_sprite.play("idle")
@@ -131,9 +143,12 @@ func update_animation():
 func update_heart_display() -> void:
 	for i in range(hearts_list.size()):
 		hearts_list[i].visible = i < health_component.get_health()
+		print(i < health_component.get_health())
 		
 
 func _on_blue_guy_sprite_animation_finished() -> void:
+	if $blue_guy_sprite.animation == 'hurt':
+		is_hurt = false
 	if $blue_guy_sprite.animation == "death": # For restarting or quitting the game after death
 		pass
 	if $blue_guy_sprite.animation == "attack":
@@ -146,14 +161,13 @@ func _on_blue_guy_sprite_animation_finished() -> void:
 
 func _on_timer_timeout() -> void:
 	is_ready_dash = true
-	
-func _on_health_changed(diff: int):
-	if diff < 0:  
-		$blue_guy_sprite.play("hurt")
 
 func _on_health_depleted():
-	#print("onHealthDepleted")
 	die()
+	
+func _on_hurt_timer_timeout() -> void:
+	is_hurt = false
+	$blue_guy_sprite/Hurtbox.set_deferred("monitoring", true)
 
 func die():
 	is_dead = true
@@ -170,4 +184,3 @@ func die():
 	$CollisionShape2D.disabled = true
 	
 	await $blue_guy_sprite.animation_finished
-	

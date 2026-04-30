@@ -4,7 +4,7 @@ extends CharacterBody2D
 
 const SPEED: int = 50
 var current_speed: int
-var knockback_force: int = 500
+var knockback_force: int = 100
 
 var can_target_player: bool = true
 var is_attacking: bool = false
@@ -12,42 +12,27 @@ var is_hurt: bool = false
 @export var direction_right: bool = true
 
 func _ready() -> void:
-	$slime_sprite/Hurtbox.collision_layer = 0
-	$slime_sprite/Hurtbox.collision_mask = 8
-	$slime_sprite/Hitbox.collision_layer = 2
-	$slime_sprite/Hitbox.collision_mask = 0
-	current_speed = SPEED
-	$slime_sprite.connect("animation_finished", _on_animation_finished)
-	$slime_sprite.play("walk")
-	$HurtTimer.wait_time = 1.0
-	$HurtTimer.connect("timeout", _on_hurt_timer_timeout)
-	update_animation()
-	
-	health_component.health_depleted.connect(_on_health_depleted)
-	health_component.health_changed.connect(_on_health_changed)
-	$slime_sprite/Hitbox.set_active_frame(6, 9)
-	
-	#var dmg_timer = Timer.new()
-	#dmg_timer.wait_time = 0.1
-	#dmg_timer.timeout.connect(_on_dmg_timer_timeout)
-	#add_child(dmg_timer)
-	#dmg_timer.start()
-	
+	var dmg_timer = Timer.new()
+	dmg_timer.wait_time = 0.5
+	dmg_timer.one_shot = false
+	dmg_timer.timeout.connect(_on_dmg_timer_timeout)
+	add_child(dmg_timer)
+	dmg_timer.start()
 	
 func _physics_process(delta: float) -> void:
-	## Add the gravity
-	#if not is_on_floor():
-		#velocity += get_gravity() * delta
-		#can_target_player = false
-	## Handle Movement
-	#if not is_attacking and not is_hurt:
-		#if direction_right:
-			#velocity.x = current_speed
-			#$slime_sprite/Ray_Detect_Player.target_position = Vector2(40, 0)
-		#else:
-			#velocity.x = -current_speed
-			#$slime_sprite/Ray_Detect_Player.target_position = Vector2(-40, 0)
-	#
+	# Add the gravity
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+		can_target_player = false
+	# Handle Movement
+	if not is_attacking and not is_hurt:
+		if direction_right:
+			velocity.x = current_speed
+			$slime_sprite/Ray_Detect_Player.target_position = Vector2(40, 0)
+		else:
+			velocity.x = -current_speed
+			$slime_sprite/Ray_Detect_Player.target_position = Vector2(-40, 0)
+	
 	move_and_slide()
 
 	if can_target_player and $slime_sprite/Ray_Detect_Player.is_colliding():
@@ -104,6 +89,11 @@ func _on_health_changed(diff: int):
 func _on_health_depleted():
 	die()
 
+func _on_dmg_timer_timeout() -> void:
+	var player = $slime_sprite/Ray_Detect_Player.get_collider()
+	if player != null and player.has_method("take_damage"):
+		player.take_damage()
+
 func die():
 	$slime_sprite/Hurtbox.set_deferred("monitoring", false)
 	$slime_sprite/Hurtbox.set_deferred("monitorable", false)
@@ -127,14 +117,3 @@ func _on_can_attack_timer_timeout() -> void:
 
 func _on_hurt_timer_timeout() -> void:
 	is_hurt = false
-
-### for testing
-#func _on_dmg_timer_timeout() -> void:
-	#var player = $slime_sprite/Ray_Detect_Player.get_collider()
-	##print("target: ", player)  
-	#if player != null:
-		#player.health_component.set_health(player.health_component.get_health() - 1)
-		#if not player.health_component._immortal:
-			#var knockback_dir = (player.global_position - global_position).normalized()
-			#player.take_damage(knockback_dir)
-###

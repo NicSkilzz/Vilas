@@ -326,10 +326,14 @@ script = ExtResource("1_12aje")
 script = ExtResource("2_nsv3n")
 metadata/_custom_type_script = "uid://6pr6b1ndb7g"
 
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
 [node name="slime_sprite" type="AnimatedSprite2D" parent="."]
 scale = Vector2(1.5, 1.5)
 sprite_frames = SubResource("SpriteFrames_vx1m5")
-animation = &"attack"
+animation = &"death"
 metadata/_edit_group_ = true
 
 [node name="Hurtbox" type="Area2D" parent="slime_sprite"]

@@ -11,10 +11,8 @@ func _ready() -> void:
 func _on_area_entered(hitbox: Hitbox) -> void:
 	if hitbox == null:
 		return
-		
-	var health_component = owner.get_node_or_null("Health")
-	if health_component:
-		health_component.health -= 1
+	if not hitbox.register_hit(self):  # only proceed if not already hit
+		return
 	
 	if owner.has_method("take_damage"):
 		var knockback_direction = (global_position - hitbox.global_position).normalized()

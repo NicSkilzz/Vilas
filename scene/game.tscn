@@ -37,7 +37,7 @@ position = Vector2(-1264, -116)
 position = Vector2(264, 404)
 
 [node name="Slime" parent="." instance=ExtResource("5_p1ry8")]
-position = Vector2(345, 510)
+position = Vector2(255, 504)
 
 [node name="SlowmoController" parent="." instance=ExtResource("6_xlg7c")]
 
